@@ -20,7 +20,7 @@ export default function Footer() {
               Zall<span className="text-white">Store</span>
             </span>
             </div>
-            <p className="text-gray-500 text-sm leading-relaxed">Platform top up game no. 1 di Indonesia. Harga termurah, proses tercepat, dan terpercaya.</p>
+            <p className="text-gray-500 text-sm leading-relaxed">{t('footer.desc')}</p>
             <div className="flex gap-3 mt-4">
               {['M', 'T', 'Y', 'I'].map((letter, i) => (
                 <div key={i} className="w-8 h-8 bg-dark-800 rounded-lg flex items-center justify-center text-gray-400 hover:bg-cyan-500/10 hover:text-cyan-400 transition cursor-pointer text-xs font-bold">
@@ -33,7 +33,7 @@ export default function Footer() {
           <div>
             <h3 className="text-white font-semibold mb-4">{t('footer.quickLinks')}</h3>
             <ul className="space-y-2">
-              {[{ href: '/', label: 'nav.home' }, { href: '/#games', label: 'nav.games' }, { href: '/#promo', label: 'nav.promo' }, { href: '/auth/register', label: 'nav.register' }, { href: '/auth/login', label: 'nav.login' }, { href: '/admin', label: 'nav.admin' }].map((link, i) => (
+              {[{ href: '/', label: 'nav.home' }, { href: '/#games', label: 'nav.games' }, { href: '/#promo', label: 'nav.promo' }, { href: '/faq', label: 'FAQ' }, { href: '/auth/register', label: 'nav.register' }, { href: '/auth/login', label: 'nav.login' }, { href: '/admin', label: 'nav.admin' }].map((link, i) => (
                 <li key={i}>
                   <Link href={link.href} className="text-gray-500 hover:text-cyan-400 transition text-sm">{t(link.label)}</Link>
                 </li>
