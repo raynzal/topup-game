@@ -3,11 +3,11 @@ import { useLanguage } from '@/context/LanguageContext'
 import { HiStar, HiChevronLeft, HiChevronRight } from 'react-icons/hi'
 
 const testimonials = [
-  { name: 'Rizky Pratama', nameId: 'Rizky Pratama', text: 'Top up MLBB cuma 5 detik langsung masuk! Harganya juga lebih murah dari yang lain. Recommended banget!', textId: 'Gila sih ini cepet bangeet. Baru aja transfer, bbrp detik udah masuk diamondnya. Udah langganan 3 bulan, gas terus!', rating: 5, game: 'Mobile Legends' },
-  { name: 'Sinta Dewi', nameId: 'Sinta Dewi', text: 'Pelayanan cepat dan ramah. Top up Genshin Impact saya selalu di sini. Trusted!', textId: 'Udah kali ke-4 top up Welkin Moon di sini. Gak pernah gagal, masuk terus. Adminnya juga ramah pas chat kemarin. Recommended!', rating: 5, game: 'Genshin Impact' },
-  { name: 'Bambang', nameId: 'Bambang', text: 'Baru pertama kali top up di sini, prosesnya gampang banget. Customer service-nya fast respon!', textId: 'Baru pertama nyobain, awalnya ragu soalnya takut penipuan. Tapi ternyata aman dan cepet. Besok top up lagi dah!', rating: 5, game: 'Free Fire' },
-  { name: 'Ayu Lestari', nameId: 'Ayu Lestari', text: 'Sudah jadi langganan sejak 6 bulan lalu. Gak pernah mengecewakan. Top up selalu masuk!', textId: 'Udah 6 bulan langganan di sini. Gak pernah zonk, selalu masuk. Harga juga lebih miring dari pasar. Mantep!', rating: 5, game: 'PUBG Mobile' },
-  { name: 'Dimas Saputra', nameId: 'Dimas Saputra', text: 'Diskon member-nya worth banget! Setiap top up jadi lebih hemat. Thank you TopUp Game!', textId: 'Pas daftar dapet diskon langsung dipake buat top up VP. Lumayan hemat 5%, bisa buat jajan lagi wkwk.', rating: 4, game: 'Valorant' },
+  { name: 'Rizky Pratama', nameId: 'Rizky Pratama', text: 'Insane fast. Like literally seconds after payment, diamonds were in my account. Been using this for 3 months, never disappointed.', textId: 'Gila sih ini cepet bangeet. Baru aja transfer, bbrp detik udah masuk diamondnya. Udah langganan 3 bulan, gas terus!', rating: 5, game: 'Mobile Legends' },
+  { name: 'Sinta', nameId: 'Sinta', text: '4th time topping up Welkin Moon here. Never failed, always goes through. Admin was super helpful when I chatted them too.', textId: 'Udah kali ke-4 top up Welkin Moon di sini. Gak pernah gagal, masuk terus. Adminnya juga ramah pas chat kemarin. Recommended!', rating: 5, game: 'Genshin Impact' },
+  { name: 'Bambang', nameId: 'Bambang', text: 'First time trying, was nervous about scams honestly. But it\'s legit and fast. Definitely coming back tomorrow!', textId: 'Baru pertama nyobain, awalnya ragu soalnya takut penipuan. Tapi ternyata aman dan cepet. Besok top up lagi dah!', rating: 5, game: 'Free Fire' },
+  { name: 'Ayu', nameId: 'Ayu', text: '6 months in and never once failed. Always goes through, and prices are better than anywhere else. No complaints!', textId: 'Udah 6 bulan langganan di sini. Gak pernah zonk, selalu masuk. Harga juga lebih miring dari pasar. Mantep!', rating: 5, game: 'PUBG Mobile' },
+  { name: 'Dimas', nameId: 'Dimas', text: 'Signed up, got the 5% discount, used it right away for VP. Saved enough for some snacks too lol.', textId: 'Pas daftar dapet diskon langsung dipake buat top up VP. Lumayan hemat 5%, bisa buat jajan lagi wkwk.', rating: 4, game: 'Valorant' },
 ]
 
 export default function TestimonialSlider() {
