@@ -6,7 +6,7 @@ import { games } from '@/data/games'
 import GameCard from '@/components/GameCard'
 import FlashSale from '@/components/FlashSale'
 import TestimonialSlider from '@/components/TestimonialSlider'
-import { HiLightningBolt, HiCash, HiShieldCheck, HiSupport, HiArrowRight, HiChevronRight, HiFire, HiChevronLeft, HiChevronRight as HiChevronRightIcon } from 'react-icons/hi'
+import { HiLightningBolt, HiCash, HiShieldCheck, HiSupport, HiArrowRight, HiChevronRight, HiFire } from 'react-icons/hi'
 
 const carouselImages = [
   '/images/mobile-legends.webp',
@@ -21,6 +21,11 @@ export default function Home() {
   const { user } = useAuth()
   const [filter, setFilter] = useState('all')
   const [slide, setSlide] = useState(0)
+  const [wordIdx, setWordIdx] = useState(0)
+
+  const rotatingWords = lang === 'id'
+    ? [{ text: 'Murah', color: 'text-blue-400' }, { text: 'Cepet', color: 'text-white' }, { text: 'Aman', color: 'text-blue-300' }]
+    : [{ text: 'Cheap', color: 'text-blue-400' }, { text: 'Fast', color: 'text-white' }, { text: 'Safe', color: 'text-blue-300' }]
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -29,8 +34,12 @@ export default function Home() {
     return () => clearInterval(timer)
   }, [])
 
-  const prevSlide = () => setSlide(s => (s === 0 ? carouselImages.length - 1 : s - 1))
-  const nextSlide = () => setSlide(s => (s + 1) % carouselImages.length)
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setWordIdx(i => (i + 1) % rotatingWords.length)
+    }, 2500)
+    return () => clearInterval(timer)
+  }, [rotatingWords.length])
 
   const popular = games.filter(g => g.popular)
   const filtered = filter === 'all' ? games : games.filter(g => g.category === filter)
@@ -62,9 +71,24 @@ export default function Home() {
                   <HiFire className="w-3 h-3" /> 100K+ Pelanggan
                 </span>
               </div>
-              <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white leading-tight mb-4">
-                {t('hero.title')}
+              <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white leading-tight mb-6">
+                {lang === 'id' ? 'Top Up Gas!' : 'Top Up? Let\'s Go!'}
               </h1>
+              <div className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-4 h-12 md:h-14 overflow-hidden">
+                <span className={`inline-block transition-all duration-500 ${rotatingWords[wordIdx].color}`}
+                  style={{
+                    animation: 'none',
+                    transform: `translateY(0)`,
+                    opacity: 1,
+                  }}
+                  key={wordIdx}
+                >
+                  <span className="inline-block animate-slide-up">{rotatingWords[wordIdx].text}</span>
+                </span>
+                <span className="text-gray-300 font-extrabold ml-2">
+                  {lang === 'id' ? 'No.1 Top Up Indonesia' : 'Indonesia\'s Top Up Hub'}
+                </span>
+              </div>
               <p className="text-lg md:text-xl text-gray-300 mb-8 max-w-xl leading-relaxed">
                 {t('hero.subtitle')}
               </p>
@@ -87,19 +111,6 @@ export default function Home() {
                   ))}
                 </div>
                 <p className="text-gray-400 text-sm">Trusted by <span className="text-white font-semibold">10,000+</span> gamers</p>
-              </div>
-              <div className="flex items-center gap-2 mt-6">
-                <button onClick={prevSlide} className="p-1.5 rounded-full bg-white/10 border border-white/20 text-white/60 hover:bg-white/20 hover:text-white transition">
-                  <HiChevronLeft className="w-4 h-4" />
-                </button>
-                <div className="flex gap-1.5">
-                  {carouselImages.map((_, i) => (
-                    <button key={i} onClick={() => setSlide(i)} className={`w-1.5 h-1.5 rounded-full transition-all ${i === slide ? 'bg-white w-4' : 'bg-white/30 hover:bg-white/50'}`} />
-                  ))}
-                </div>
-                <button onClick={nextSlide} className="p-1.5 rounded-full bg-white/10 border border-white/20 text-white/60 hover:bg-white/20 hover:text-white transition">
-                  <HiChevronRightIcon className="w-4 h-4" />
-                </button>
               </div>
             </div>
             <div className="hidden lg:flex items-center justify-center relative">
