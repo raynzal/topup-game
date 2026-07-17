@@ -1,11 +1,11 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useLanguage } from '@/context/LanguageContext'
 import { useAuth } from '@/context/AuthContext'
 import { games } from '@/data/games'
 import { products } from '@/data/products'
 import GameIDChecker from '@/components/GameIDChecker'
-import { HiArrowLeft, HiStar, HiFire, HiCheck, HiShoppingCart, HiChevronDown } from 'react-icons/hi'
+import { HiArrowLeft, HiStar, HiCheck, HiShoppingCart, HiExclamation } from 'react-icons/hi'
 
 export default function GameDetail({ game, productList }) {
   const { t, lang } = useLanguage()
@@ -16,10 +16,23 @@ export default function GameDetail({ game, productList }) {
   const [serverId, setServerId] = useState('')
   const [nickname, setNickname] = useState('')
   const [email, setEmail] = useState('')
-  const [payment, setPayment] = useState('')
   const [showCheckout, setShowCheckout] = useState(false)
   const [success, setSuccess] = useState(false)
-  const [paymentOpen, setPaymentOpen] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [snapReady, setSnapReady] = useState(false)
+
+  useEffect(() => {
+    if (document.getElementById('midtrans-snap')) {
+      setSnapReady(true)
+      return
+    }
+    const script = document.createElement('script')
+    script.id = 'midtrans-snap'
+    script.src = 'https://app.sandbox.midtrans.com/snap/snap.js'
+    script.setAttribute('data-client-key', process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY || '')
+    script.onload = () => setSnapReady(true)
+    document.body.appendChild(script)
+  }, [])
 
   if (!game) {
     return (
@@ -32,14 +45,6 @@ export default function GameDetail({ game, productList }) {
     )
   }
 
-  const payMethods = [
-    { id: 'gopay', name: 'GoPay', icon: '💚' },
-    { id: 'ovo', name: 'OVO', icon: '💜' },
-    { id: 'dana', name: 'DANA', icon: '💙' },
-    { id: 'shopeepay', name: 'ShopeePay', icon: '🧡' },
-    { id: 'linkaja', name: 'LinkAja', icon: '🔴' },
-  ]
-
   const total = selected ? (user ? Math.round(selected.price * 0.95) : selected.price) : 0
   const discount = user ? Math.round(selected ? selected.price * 0.05 : 0) : 0
 
@@ -49,23 +54,103 @@ export default function GameDetail({ game, productList }) {
     setShowCheckout(true)
   }
 
-  const handlePay = () => {
-    if (!payment) return alert('Pilih metode pembayaran')
-    const order = {
-      gameId: gameId.trim(),
-      serverId: serverId.trim(),
-      nickname: nickname.trim(),
-      email: email.trim(),
-      product: selected,
-      payment,
-      total,
-      status: 'success',
-      game: lang === 'id' ? game.nameId : game.name,
+  const handlePay = async () => {
+    setLoading(true)
+    try {
+      const res = await fetch('/api/create-transaction', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          product: selected,
+          gameId: gameId.trim(),
+          serverId: serverId.trim(),
+          nickname: nickname.trim(),
+          email: email.trim() || 'customer@zallstore.com',
+          game: lang === 'id' ? game.nameId : game.name,
+        }),
+      })
+      const data = await res.json()
+
+      const orderId = data.orderId
+      const orders = JSON.parse(localStorage.getItem('orders') || '[]')
+
+      if (data.mode === 'demo') {
+        const order = {
+          id: orderId,
+          userId: user?.id,
+          date: new Date().toISOString(),
+          gameId: gameId.trim(),
+          serverId: serverId.trim(),
+          nickname: nickname.trim(),
+          email: email.trim(),
+          product: selected,
+          total,
+          status: 'success',
+          game: lang === 'id' ? game.nameId : game.name,
+          payment: 'Midtrans (Demo)',
+        }
+        orders.push(order)
+        localStorage.setItem('orders', JSON.stringify(orders))
+        setSuccess(true)
+        setLoading(false)
+        return
+      }
+
+      window.snap.pay(data.snapToken, {
+        onSuccess: (result) => {
+          const order = {
+            id: orderId,
+            userId: user?.id,
+            date: new Date().toISOString(),
+            gameId: gameId.trim(),
+            serverId: serverId.trim(),
+            nickname: nickname.trim(),
+            email: email.trim(),
+            product: selected,
+            total,
+            status: 'success',
+            game: lang === 'id' ? game.nameId : game.name,
+            payment: result.payment_type,
+            transactionId: result.transaction_id,
+          }
+          orders.push(order)
+          localStorage.setItem('orders', JSON.stringify(orders))
+          setSuccess(true)
+          setLoading(false)
+        },
+        onPending: (result) => {
+          const order = {
+            id: orderId,
+            userId: user?.id,
+            date: new Date().toISOString(),
+            gameId: gameId.trim(),
+            serverId: serverId.trim(),
+            nickname: nickname.trim(),
+            email: email.trim(),
+            product: selected,
+            total,
+            status: 'pending',
+            game: lang === 'id' ? game.nameId : game.name,
+            payment: result.payment_type,
+            transactionId: result.transaction_id,
+          }
+          orders.push(order)
+          localStorage.setItem('orders', JSON.stringify(orders))
+          setSuccess(true)
+          setLoading(false)
+        },
+        onError: (result) => {
+          alert(`Pembayaran gagal: ${result.status_message || 'Unknown error'}`)
+          setLoading(false)
+        },
+        onClose: () => {
+          setLoading(false)
+        },
+      })
+    } catch (err) {
+      alert('Gagal memproses pembayaran. Coba lagi.')
+      setLoading(false)
     }
-    const orders = JSON.parse(localStorage.getItem('orders') || '[]')
-    orders.push({ ...order, id: Date.now().toString(), userId: user?.id, date: new Date().toISOString() })
-    localStorage.setItem('orders', JSON.stringify(orders))
-    setSuccess(true)
   }
 
   if (success) {
@@ -82,7 +167,6 @@ export default function GameDetail({ game, productList }) {
             <p className="text-gray-400 text-sm">ID: <span className="text-white">{gameId}</span></p>
             <p className="text-gray-400 text-sm">Paket: <span className="text-white">{selected?.name}</span></p>
             <p className="text-gray-400 text-sm">Total: <span className="text-cyan-400 font-bold">Rp {total.toLocaleString()}</span></p>
-            <p className="text-gray-400 text-sm">Pembayaran: <span className="text-white">{payMethods.find(p => p.id === payment)?.name}</span></p>
           </div>
           <div className="flex gap-3">
             <Link href="/" className="btn-secondary flex-1 py-3 text-sm">Beranda</Link>
@@ -211,28 +295,12 @@ export default function GameDetail({ game, productList }) {
                   )}
                 </div>
 
-                <div className="mb-6">
-                  <label className="text-gray-400 text-sm block mb-2">{t('checkout.payment')}</label>
-                  <div className="relative">
-                    <button onClick={() => setPaymentOpen(!paymentOpen)} className="w-full input-field text-left flex items-center justify-between">
-                      {payment ? (
-                        <span className="flex items-center gap-2">
-                          <span>{payMethods.find(p => p.id === payment)?.icon}</span>
-                          <span className="text-white">{payMethods.find(p => p.id === payment)?.name}</span>
-                        </span>
-                      ) : <span className="text-gray-500">Pilih {t('checkout.payment')}</span>}
-                      <HiChevronDown className={`w-4 h-4 text-gray-500 transition ${paymentOpen ? 'rotate-180' : ''}`} />
-                    </button>
-                    {paymentOpen && (
-                      <div className="absolute top-full left-0 right-0 mt-1 bg-dark-800 border border-dark-700 rounded-xl overflow-hidden z-10 shadow-xl">
-                        {payMethods.map(pm => (
-                          <button key={pm.id} onClick={() => { setPayment(pm.id); setPaymentOpen(false) }} className="w-full flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:bg-dark-700 transition">
-                            <span>{pm.icon}</span> {pm.name}
-                          </button>
-                        ))}
-                      </div>
-                    )}
+                <div className="bg-gradient-to-r from-cyan-500/10 to-blue-600/10 border border-cyan-500/20 rounded-xl p-4 mb-6">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-gray-400 text-sm">{t('checkout.payment')}</span>
+                    <span className="text-xs text-cyan-400">Midtrans</span>
                   </div>
+                  <p className="text-gray-500 text-xs mt-1">GoPay, OVO, DANA, ShopeePay, Transfer Bank, Alfamart/Indomaret</p>
                 </div>
 
                 <div className="bg-dark-900 rounded-xl p-4 mb-6">
@@ -242,9 +310,25 @@ export default function GameDetail({ game, productList }) {
                   </div>
                 </div>
 
-                <button onClick={handlePay} disabled={!payment} className="btn-primary w-full py-3 text-sm disabled:opacity-50">
-                  {t('checkout.submit')} - Rp {total.toLocaleString()}
+                <button onClick={handlePay} disabled={!snapReady || loading} className="btn-primary w-full py-3 text-sm disabled:opacity-50 flex items-center justify-center gap-2">
+                  {loading ? (
+                    <>
+                      <svg className="animate-spin h-4 w-4 text-white" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                      </svg>
+                      Memproses...
+                    </>
+                  ) : (
+                    <>{t('checkout.submit')} - Rp {total.toLocaleString()}</>
+                  )}
                 </button>
+
+                {!snapReady && (
+                  <p className="text-gray-500 text-xs text-center mt-2 flex items-center justify-center gap-1">
+                    <HiExclamation className="w-3 h-3" /> Memuat metode pembayaran...
+                  </p>
+                )}
               </div>
             )}
           </div>
@@ -279,9 +363,9 @@ export default function GameDetail({ game, productList }) {
               <div className="bg-dark-800/50 border border-dark-700 rounded-2xl p-5">
                 <p className="text-gray-400 text-sm mb-3">Metode Pembayaran</p>
                 <div className="flex flex-wrap gap-2">
-                  {payMethods.map(pm => (
-                    <span key={pm.id} className="text-xs bg-dark-900 border border-dark-700 px-2 py-1 rounded-lg text-gray-400">
-                      {pm.icon} {pm.name}
+                  {['GoPay', 'OVO', 'DANA', 'ShopeePay', 'Bank Transfer', 'Alfamart', 'Indomaret', 'QRIS'].map(name => (
+                    <span key={name} className="text-xs bg-dark-900 border border-dark-700 px-2 py-1 rounded-lg text-gray-400">
+                      {name}
                     </span>
                   ))}
                 </div>
