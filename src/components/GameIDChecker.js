@@ -39,10 +39,10 @@ export default function GameIDChecker({ gameId: gameSlug }) {
             value={id}
             onChange={e => { setId(e.target.value); setError(''); setResult(null) }}
             placeholder={t('gid.placeholder')}
-            className="w-full bg-dark-900 border border-dark-700 rounded-xl pl-9 pr-3 py-2.5 text-sm text-gray-200 placeholder-gray-600 focus:outline-none focus:border-cyan-500/40"
+            className="w-full bg-dark-900 border border-dark-700 rounded-xl pl-9 pr-3 py-2.5 text-sm text-gray-200 placeholder-gray-600 focus:outline-none focus:border-blue-500/40"
           />
         </div>
-        <button onClick={checkID} disabled={loading} className="px-4 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-sm font-medium rounded-xl hover:shadow-lg hover:shadow-cyan-500/20 transition disabled:opacity-50">
+        <button onClick={checkID} disabled={loading} className="px-4 py-2.5 bg-gradient-to-r from-blue-600 to-blue-800 text-white text-sm font-medium rounded-xl hover:shadow-lg hover:shadow-blue-600/20 transition disabled:opacity-50">
           {loading ? '...' : t('gid.btn')}
         </button>
       </div>

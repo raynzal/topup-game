@@ -7,7 +7,7 @@ export default function GameCard({ game, featured }) {
 
   return (
     <Link href={`/games/${game.id}`}>
-      <div className={`group relative overflow-hidden rounded-2xl bg-dark-800 border border-dark-700 hover:border-cyan-500/30 transition-all duration-500 hover:shadow-xl hover:shadow-cyan-500/5 ${featured ? 'h-80' : 'h-64'}`}>
+      <div className={`group relative overflow-hidden rounded-2xl bg-dark-800 border border-dark-700 hover:border-blue-500/40 transition-all duration-500 hover:shadow-xl hover:shadow-blue-500/10 ${featured ? 'h-80' : 'h-64'}`}>
         <img src={game.image} alt={game.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
         <div className={`absolute inset-0 bg-gradient-to-br ${game.bgColor} mix-blend-overlay opacity-40`} />
         <div className="absolute inset-0 bg-gradient-to-t from-dark-950 via-dark-950/40 to-transparent" />

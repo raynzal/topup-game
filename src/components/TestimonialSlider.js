@@ -27,14 +27,14 @@ export default function TestimonialSlider() {
           <p className="text-gray-500 mt-2">{t('testimonial.subtitle')}</p>
         </div>
         <div className="max-w-3xl mx-auto relative">
-          <button onClick={prev} className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-12 p-2 bg-dark-800 border border-dark-700 rounded-full text-gray-400 hover:text-cyan-400 hover:border-cyan-500/30 transition z-10">
+          <button onClick={prev} className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-12 p-2 bg-dark-800 border border-dark-700 rounded-full text-gray-400 hover:text-blue-400 hover:border-blue-500/30 transition z-10">
             <HiChevronLeft className="w-5 h-5" />
           </button>
-          <button onClick={next} className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-12 p-2 bg-dark-800 border border-dark-700 rounded-full text-gray-400 hover:text-cyan-400 hover:border-cyan-500/30 transition z-10">
+          <button onClick={next} className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-12 p-2 bg-dark-800 border border-dark-700 rounded-full text-gray-400 hover:text-blue-400 hover:border-blue-500/30 transition z-10">
             <HiChevronRight className="w-5 h-5" />
           </button>
           <div className="bg-dark-800/50 border border-dark-700 rounded-2xl p-8 md:p-10 text-center relative">
-            <div className="absolute top-6 left-6 text-5xl text-cyan-500/20 font-serif leading-none">&ldquo;</div>
+            <div className="absolute top-6 left-6 text-5xl text-blue-500/20 font-serif leading-none">&ldquo;</div>
             <div className="flex items-center justify-center gap-1 mb-4">
               {[...Array(5)].map((_, i) => (
                 <HiStar key={i} className={`w-5 h-5 ${i < tst.rating ? 'text-yellow-400' : 'text-gray-600'}`} />
@@ -44,7 +44,7 @@ export default function TestimonialSlider() {
               &ldquo;{lang === 'id' ? tst.textId : tst.text}&rdquo;
             </p>
             <div className="flex items-center justify-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center text-white font-bold text-sm">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-800 flex items-center justify-center text-white font-bold text-sm">
                 {tst.name.charAt(0)}
               </div>
               <div className="text-left">
@@ -54,7 +54,7 @@ export default function TestimonialSlider() {
             </div>
             <div className="flex items-center justify-center gap-2 mt-6">
               {testimonials.map((_, i) => (
-                <button key={i} onClick={() => setCurrent(i)} className={`w-2 h-2 rounded-full transition ${i === current ? 'bg-cyan-400 w-6' : 'bg-dark-600 hover:bg-dark-500'}`} />
+                <button key={i} onClick={() => setCurrent(i)} className={`w-2 h-2 rounded-full transition ${i === current ? 'bg-blue-400 w-6' : 'bg-dark-600 hover:bg-dark-500'}`} />
               ))}
             </div>
           </div>
