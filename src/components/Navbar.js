@@ -25,11 +25,9 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-800 rounded-lg flex items-center justify-center font-bold text-white text-sm group-hover:shadow-lg group-hover:shadow-blue-500/30 transition-all">
-              ZS
-            </div>
-            <span className="text-xl font-bold bg-gradient-to-r from-blue-400 to-white bg-clip-text text-transparent">
-              Zall<span className="text-white">Store</span>
+            <img src="/images/zallstore-icon.svg" alt="ZallStore" className="w-8 h-8" />
+            <span className="text-xl font-bold text-white">
+              Zall<span className="text-blue-400">Store</span>
             </span>
           </Link>
 

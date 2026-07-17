@@ -13,11 +13,9 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
             <div className="flex items-center gap-2 mb-4">
-            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-800 rounded-lg flex items-center justify-center font-bold text-white text-sm">
-              ZS
-            </div>
-            <span className="text-xl font-bold bg-gradient-to-r from-blue-400 to-white bg-clip-text text-transparent">
-              Zall<span className="text-white">Store</span>
+            <img src="/images/zallstore-icon.svg" alt="ZallStore" className="w-8 h-8" />
+            <span className="text-xl font-bold text-white">
+              Zall<span className="text-blue-400">Store</span>
             </span>
             </div>
             <p className="text-gray-500 text-sm leading-relaxed">{t('footer.desc')}</p>
