@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { useLanguage } from '@/context/LanguageContext'
 import { useAuth } from '@/context/AuthContext'
@@ -8,14 +7,9 @@ import { products } from '@/data/products'
 import GameIDChecker from '@/components/GameIDChecker'
 import { HiArrowLeft, HiStar, HiFire, HiCheck, HiShoppingCart, HiChevronDown } from 'react-icons/hi'
 
-export default function GameDetail() {
-  const router = useRouter()
-  const { slug } = router.query
+export default function GameDetail({ game, productList }) {
   const { t, lang } = useLanguage()
   const { user } = useAuth()
-
-  const game = games.find(g => g.id === slug)
-  const productList = products[slug] || []
 
   const [selected, setSelected] = useState(null)
   const [gameId, setGameId] = useState('')
@@ -163,7 +157,7 @@ export default function GameDetail() {
                 </div>
 
                 <div className="mt-6">
-                  <GameIDChecker gameId={slug} />
+                  <GameIDChecker gameId={game?.id} />
                 </div>
 
                 <div className="mt-6">
@@ -298,4 +292,17 @@ export default function GameDetail() {
       </div>
     </div>
   )
+}
+
+export async function getStaticPaths() {
+  const paths = games.map(game => ({
+    params: { slug: game.id }
+  }))
+  return { paths, fallback: false }
+}
+
+export async function getStaticProps({ params }) {
+  const game = games.find(g => g.id === params.slug)
+  const productList = products[params.slug] || []
+  return { props: { game, productList } }
 }
