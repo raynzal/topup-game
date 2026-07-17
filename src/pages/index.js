@@ -118,23 +118,27 @@ export default function Home() {
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-blue-800 rounded-full blur-3xl opacity-20 animate-pulse-slow" />
                 <div className="relative w-80 h-80 rounded-full border border-white/20 flex items-center justify-center backdrop-blur-sm bg-white/5">
                   <div className="text-center">
-                    <div className="text-8xl mb-2">🎮</div>
+                    <div className="w-20 h-20 mx-auto mb-3 bg-gradient-to-br from-blue-500 to-blue-800 rounded-2xl flex items-center justify-center shadow-xl shadow-blue-600/30">
+                      <span className="text-3xl font-extrabold text-white">ZS</span>
+                    </div>
                     <p className="text-white font-bold text-lg">ZallStore</p>
                     <p className="text-gray-400 text-sm">No.1 Top Up Indonesia</p>
                   </div>
                 </div>
-                {['ML', 'FF', 'PUBG', 'GI', 'VL'].map((label, i) => {
-                  const angles = [0, 72, 144, 216, 288]
-                  const rad = (angles[i] * Math.PI) / 180
-                  const r = 160
-                  const x = Math.cos(rad) * r
-                  const y = Math.sin(rad) * r
-                  return (
-                    <div key={i} className="absolute w-10 h-10 bg-dark-800/80 backdrop-blur-sm border border-white/20 rounded-xl flex items-center justify-center text-[8px] text-white font-bold shadow-lg" style={{ left: `calc(50% + ${x}px - 20px)`, top: `calc(50% + ${y}px - 20px)` }}>
-                      {label}
-                    </div>
-                  )
-                })}
+                <div className="absolute inset-0 animate-spin-slow" style={{ animationDuration: '12s' }}>
+                  {['ML', 'FF', 'PUBG', 'GI', 'VL'].map((label, i) => {
+                    const angles = [0, 72, 144, 216, 288]
+                    const rad = (angles[i] * Math.PI) / 180
+                    const r = 160
+                    const x = Math.cos(rad) * r
+                    const y = Math.sin(rad) * r
+                    return (
+                      <div key={i} className="absolute w-11 h-11 bg-dark-800/90 backdrop-blur-sm border border-white/30 rounded-xl flex items-center justify-center text-[9px] text-white font-bold shadow-lg hover:scale-110 transition-transform" style={{ left: `calc(50% + ${x}px - 22px)`, top: `calc(50% + ${y}px - 22px)` }}>
+                        {label}
+                      </div>
+                    )
+                  })}
+                </div>
               </div>
             </div>
           </div>

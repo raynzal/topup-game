@@ -34,6 +34,7 @@ module.exports = {
         'slide-up': 'slideUp 0.5s ease-out',
         'pulse-slow': 'pulse 3s infinite',
         'glow': 'glow 2s ease-in-out infinite alternate',
+        'spin-slow': 'spin 12s linear infinite',
       },
       keyframes: {
         fadeIn: {
