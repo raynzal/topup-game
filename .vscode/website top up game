@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZallStore - Game Top-Up Service</title>
+    <style css 1>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        nav ul li {
+            margin-left: 2rem;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        nav ul li a:hover {
+            color: #ffd700;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 4rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://picsum.photos/seed/gaming/1200/600');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.3;
+            z-index: 1;
+        }
+        .hero .container {
+            position: relative;
+            z-index: 2;
+        }
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        .cta-button {
+            display: inline-block;
+            background: #ffd700;
+            color: #333;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Main Content */
+        main {
+            padding: 2rem 0;
+        }
+        .section {
+            margin-bottom: 3rem;
+        }
+        .section h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: #333;
+        }
+
+        /* Games Grid */
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        .game-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        .game-card:hover {
+            transform: translateY(-5px);
+        }
+        .game-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+        }
+        .game-card h3 {
+            margin-bottom: 1rem;
+            color: #667eea;
+        }
+        .topup-form {
+            margin-top: 1rem;
+        }
+        .topup-form label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        .topup-form input, .topup-form select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+        }
+        .topup-button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 1rem;
+            width: 100%;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s;
+        }
+        .topup-button:hover {
+            background: #5a67d8;
+        }
+
+        /* User Account Section */
+        .account-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .login-form, .register-form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .login-form input, .register-form input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+        }
+        .login-button, .register-button {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 1rem;
+            width: 100%;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .login-button:hover, .register-button:hover {
+            background: #218838;
+        }
+        .toggle-link {
+            margin-top: 1rem;
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        /* Footer */
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            nav ul {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .hero h1 {
+                font-size: 2rem;
+            }
+            .games-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">ZallStore</div>
+                <nav>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#games">Top-Up Games</a></li>
+                        <li><a href="#account">Account</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="container">
+            <h1>Welcome to ZallStore</h1>
+            <p>Your trusted one-stop shop for fast and secure game top-ups. Top up your favorite games with ease!</p>
+            <a href="#games" class="cta-button">Start Top-Up Now</a>
+        </div>
+    </section>
+
+    <main>
+        <div class="container">
+            <section id="games" class="section">
+                <h2>Popular Games for Top-Up</h2>
+                <div class="games-grid">
+                    <!-- Existing Games -->
+                    <div class="game-card">
+                        <img src="https://picsum.photos/seed/mobilelegends/250/150" alt="Mobile Legend">
+                        <h3>Mobile Legend</h3>
+                        <div class="topup-form">
+                            <label for="mobile-legend-amount">Select Amount:</label>
+                            <select id="mobile-legend-amount">
+                                <option value="100">100 Diamonds - $5</option>
+                                <option value="500">500 Diamonds - $20</option>
+                                <option value="1000">1000 Diamonds - $35</option>
+                            </select>
+                            <label for="mobile-legend-userid">User  ID:</label>
+                            <input type="text" id="mobile-legend-userid" placeholder="Enter your in-game User ID">
+                            <button class="topup-button" onclick="processTopUp('Mobile Legend')">Top Up Now</button>
+                        </div>
+                    </div>
+                    <div class="game-card">
+                        <img src="https://picsum.photos/seed/freefire/250/150" alt="Free Fire">
+                        <h3>Free Fire</h3>
+                        <div class="topup-form">
+                            <label for="free-fire-amount">Select Amount:</label>
+                            <select id="free-fire-amount">
+                                <option value="100">100 Diamonds - $10</option>
+                                <option value="500">500 Diamonds - $45</option>
+                                <option value="1060">1060 Diamonds - $90</option>
+                            </select>
+                            <label for="free-fire-userid">User  ID:</label>
+                            <input type="text" id="free-fire-userid" placeholder="Enter your in-game User ID">
+                            <button class="topup-button" onclick="processTopUp('Free Fire')">Top Up Now</button>
+                        </div>
+                    </div>
+
+                    <!-- New Games Added -->
+                    <div class="game-card">
+                        <img src="https://picsum.photos/seed/valorant/250/150" alt="Valorant">
+                        <h3>Valorant</h3>
+                        <div class="topup-form">
+                            <label for="valorant-amount">Select Amount:</label>
+                            <select id="valorant-amount">
+                                <option value="1000">1000 VP - $10</option>
+                                <option value="3500">3500 VP - $35</option>
+                                <option value="5200">5200 VP - $50</option>
+                            </select>
+                            <label for="valorant-userid">User  ID:</label>
+                            <input type="text" id="valorant-userid" placeholder="Enter your Riot ID">
+                            <button class="topup-button" onclick="processTopUp('Valorant')">Top Up Now</button>
+                        </div>
+                    </div>
+                    <div class="game-card">
+                        <img src="https://picsum.photos/seed/roblox/250/150" alt="Roblox">
+                        <h3>Roblox</h3>
+                        <div class="topup-form">
+                            <label for="roblox-amount">Select Amount:</label>
+                            <select id="roblox-amount">
+                                <option value="400">400 Robux - $5</option>
+                                <option value="800">800 Robux - $10</option>
+                                <option value="1700">1700 Robux - $20</option>
+                            </select>
+                            <label for="roblox-userid">User  ID:</label>
+                            <input type="text" id="roblox-userid" placeholder="Enter your Roblox Username">
+                            <button class="topup-button" onclick="processTopUp('Roblox')">Top Up Now</button>
+                        </div>
+                    </div>
+                    <div class="game-card">
+                        <img src="https://picsum.photos/seed/callofduty/250/150" alt="Call of Duty">
+                        <h3>Call of Duty</h3>
+                        <div class="topup-form">
+                            <label for="call-of-duty-amount">Select Amount:</label>
+                            <select id="call-of-duty-amount">
+                                <option value="500">500 CP - $5</option>
+                                <option value="2000">2000 CP - $20</option>
+                                <option value="5000">5000 CP - $45</option>
+                            </select>
+                            <label for="call-of-duty-userid">User  ID:</label>
+                            <input type="text" id="call-of-duty-userid" placeholder="Enter your Activision ID">
+                            <button class="topup-button" onclick="processTopUp('Call of Duty')">Top Up Now</button>
+                        </div>
+                    </div>
+                    <div class="game-card">
+                        <img src="https://picsum.photos/seed/deltaforce/250/150" alt="Delta Force">
+                        <h3>Delta Force</h3>
+                        <div class="topup-form">
+                            <label for="delta-force-amount">Select Amount:</label>
+                            <select id="delta-force-amount">
+                                <option value="1000">1000 Credits - $10</option>
+                                <option value="5000">5000 Credits - $40</option>
+                                <option value="10000">10000 Credits - $75</option>
+                            </select>
+                            <label for="delta-force-userid">User  ID:</label>
+                            <input type="text" id="delta-force-userid" placeholder="Enter your in-game User ID">
+                            <button class="topup-button" onclick="processTopUp('Delta Force')">Top Up Now</button>
+                        </div>
+                    </div>
+                    <div class="game-card">
+                        <img src="https://picsum.photos/seed/minecraft/250/150" alt="Minecraft">
+                        <h3>Minecraft</h3>
+                        <div class="topup-form">
+                            <label for="minecraft-amount">Select Amount:</label>
+                            <select id="minecraft-amount">
+                                <option value="320">320 Minecoins - $5</option>
+                                <option value="1020">1020 Minecoins - $15</option>
+                                <option value="1720">1720 Minecoins - $25</option>
+                            </select>
+                            <label for="minecraft-userid">User  ID:</label>
+                            <input type="text" id="minecraft-userid" placeholder="Enter your Minecraft Username">
+                            <button class="topup-button" onclick="processTopUp('Minecraft')">Top Up Now</button>
+                        </div>
+                    </div>
+                    <div class="game-card">
+                        <img src="https://picsum.photos/seed/pubg/250/150" alt="PUBG">
+                        <h3>PUBG</h3>
+                        <div class="topup-form">
+                            <label for="pubg-amount">Select Amount:</label>
+                            <select id="pubg-amount">
+                                <option value="60">60 UC - $1</option>
+                                <option value="325">325 UC - $5</option>
+                                <option value="1800">1800 UC - $25</option>
+                            </select>
+                            <label for="pubg-userid">User  ID:</label>
+                            <input type="text" id="pubg-userid" placeholder="Enter your PUBG Character ID">
+                            <button class="topup-button" onclick="processTopUp('PUBG')">Top Up Now</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="account" class="section">
+                <h2>Manage Your Account</h2>
+                <div class="account-section">
+                    <div id="login-form">
+                        <h3>Login</h3>
+                        <form class="login-form">
+                            <input type="email" placeholder="Email" required>
+                            <input type="password" placeholder="Password" required>
+                            <button type="submit" class="login-button">Login</button>
+                        </form>
+                        <a href="#" class="toggle-link" onclick="toggleForm()">Don't have an account? Register</a>
+                    </div>
+                    <div id="register-form" style="display: none;">
+                        <h3>Register</h3>
+                        <form class="register-form">
+                            <input type="text" placeholder="Nickname" required>
+                            <input type="email" placeholder="Email" required>
+                            <input type="password" placeholder="Password" required>
+                            <button type="submit" class="register-button">Register</button>
+                        </form>
+                        <a href="#" class="toggle-link" onclick="toggleForm()">Already have an account? Login</a>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer id="contact">
+        <div class="container">
+            <p>&copy; 2023 ZallStore. All rights reserved. | Contact: support@zallstore.com | Secure payments via trusted gateways.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Simple JavaScript for interactivity
+        function processTopUp(game) {
+            const sanitizedGame = game.toLowerCase().replace(' ', '-').replace(' of ', '-of-');
+            const amountSelect = document.getElementById(sanitizedGame + '-amount');
+            const useridInput = document.getElementById(sanitizedGame + '-userid');
+            const amount = amountSelect ? amountSelect.value : '';
+            const userid = useridInput ? useridInput.value : '';
+            if (!userid) {
+                alert('Please enter your User ID!');
+                return;
+            }
+            // In a real app, this would send data to a server for processing
+            alert(`Top-up request for ${game}: ${amount} submitted! Check your email for confirmation. (Demo mode)`);
+        }
+
+        function toggleForm() {
+            const loginForm = document.getElementById('login-form');
+            const registerForm = document.getElementById('register-form');
+            if (loginForm.style.display === 'none') {
+                loginForm.style.display = 'block';
+                registerForm.style.display = 'none';
+            } else {
+                loginForm.style.display = 'none';
+                registerForm.style.display = 'block';
+            }
+        }
+
+        // Form submissions (demo - in real app, use backend)
+        document.querySelector('.login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Login successful! (Demo mode)');
+        });
+        document.querySelector('.register-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Registration successful! Check your email to verify. (Demo mode)');
+        });
+
+        // Smooth scrolling for nav links
